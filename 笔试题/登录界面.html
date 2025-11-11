@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录界面</title>
+    <style>
+        /* 全局样式 */
+        * { margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        /* 视频背景 */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+        #background-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 无拉伸填满屏幕，裁剪多余边缘 */
+        }
+        /* 登录框：居中显示+半透明背景 */
+        .login-box {
+            position: relative;
+            z-index: 1;
+            width: 350px;
+            margin: 150px auto 0;
+            padding: 40px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 8px;
+            text-align: center;
+        }
+        .login-box h2 { 
+            margin-bottom: 30px; 
+            color: black; 
+        }
+        .login-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        #login-button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            background: blue;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        /* 切换视频样式（全屏覆盖+顶层显示） */
+        #transition-video {
+            position: fixed; /* 固定在屏幕顶层，覆盖所有内容 */
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 999; /* 确保在最上层，比登录框优先级高 */
+            object-fit: cover;
+            display: none; /* 默认隐藏，点击登录后再显示 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 登录页背景视频 -->
+    <div class="background">
+        <video id="background-video" loop muted preload="auto">
+            <source src="VID_20250923_154241.mp4" type="video/mp4">
+            您的浏览器不支持视频播放，请更新浏览器。
+        </video>
+    </div>
+
+    <!-- 切换视频（默认隐藏） -->
+    <video id="transition-video" muted preload="auto">
+        <source src="VID_20250923_154411.mp4" type="video/mp4">
+    </video>
+
+    <!-- 登录框 -->
+    <div class="login-box" id="login-container">
+        <h2>用户登录</h2>
+        <input class="login-input" id="username" placeholder="请输入用户名" required>
+        <input type="password"  id="password" class="login-input" placeholder="请输入密码" required>
+        <button id="login-button">登录</button>
+    </div>
+
+    <script>
+        let backgroundVideo = document.getElementById('background-video');
+        let loginButton = document.getElementById('login-button');
+        let loginContainer = document.getElementById('login-container');
+        let transitionVideo = document.getElementById('transition-video');
+        
+        const username1 = '刘海灿';
+        const password1 = '202405650711';
+        // let isWaiting = false;
+
+        // 背景视频播放
+        window.onload = () => {
+            backgroundVideo.play().catch(err => {
+                document.body.addEventListener('click', () => backgroundVideo.play(), { once: true });
+            });
+        };
+
+        // 登录按钮点击
+        loginButton.addEventListener('click', () => {
+            // if (isWaiting) return;
+
+            const usernameInput = document.getElementById('username').value.trim(); 
+            const passwordInput = document.getElementById('password').value.trim();
+
+            if(usernameInput == username1 && passwordInput == password1){
+                // 触发切换逻辑
+                // isWaiting = true;
+                startTransition();
+            }else{
+                alert('账号或密码错误');
+            }
+            
+        });
+
+        // 启动切换视频并控制跳转
+        function startTransition() {
+            // 隐藏登录框
+            loginContainer.style.display = 'none';
+            // 暂停背景视频
+            backgroundVideo.pause();
+            // 显示并播放切换视频
+            transitionVideo.style.display = 'block';
+            transitionVideo.play();
+
+            // 切换视频结束后跳转
+            transitionVideo.addEventListener('ended', () => {
+                window.location.href = '主页.html'; // 替换为你的首页路径
+            }, { once: true });
+        }
+    </script>
+</body>
+</html> 

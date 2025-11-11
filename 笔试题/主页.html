@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>主页</title>
+    <style>
+        /* 全局样式 */
+        * { margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+        #background-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 无拉伸填满屏幕，裁剪多余边缘 */
+        }
+        #box {
+            position: absolute;
+            top:50%;
+            left: 70%;
+            transform: translate(-50%,-50%);
+            padding: 20px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 8px;
+            text-align: center;
+        }
+        table{
+            border-collapse: collapse;/*合并边框*/
+            margin-top: 20px;
+        }
+        th,td{
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 8px;
+        }
+        th{
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <video id="background-video" loop muted preload="auto">
+            <source src="VID_20250923_154442.mp4" type="video/mp4">
+            您的浏览器不支持视频播放，请更新浏览器。
+        </video>
+    </div>
+    <div id="box">
+            <h2>个人信息</h2>
+            <table>
+                <tr>
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <th>班级</th>
+                </tr>
+                <tr>
+                    <td>202405650711</td>
+                    <td>刘海灿</td>
+                    <td>制药工程2班</td>
+                </tr>
+            </table>
+        </div>
+        <script>
+            let backgroundVideo = document.getElementById('background-video');
+            
+            // 背景视频播放
+            window.onload = () => {
+                backgroundVideo.play().catch(err => {
+                    document.body.addEventListener('click', () => backgroundVideo.play(), { once: true });
+                });
+            };
+        </script>
+</body>
+</html>
